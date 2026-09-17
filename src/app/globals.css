@@ -1,26 +1,268 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ------------------------------------------------------------------------
+   Telic Vision — design tokens
+   Source: STYLE_GUIDE.md
+
+   The interface is almost entirely monochrome. Color belongs to generated
+   customer applications, not to Telic Vision itself.
+
+   Structure
+   1. @theme          Literal tokens. Tailwind emits them as CSS variables on
+                      :root and generates utilities (bg-ink, font-display,
+                      tracking-label, text-body, rounded-pill, ...).
+   2. @theme inline   Semantic aliases that resolve to runtime variables.
+   3. :root           Tokens that are not Tailwind namespaces (weights,
+                      spacing scale, motion, z-index, component values).
+   4. Base styles.
+   ------------------------------------------------------------------------ */
+
+/* 1. Literal tokens ------------------------------------------------------ */
+
+@theme {
+  /* Palette — reset Tailwind's default colors; the brand is monochrome. */
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --color-black: #000000; /* Primary buttons, active states, progress, logo */
+  --color-white: #ffffff; /* Main background, reversed text */
+  --color-ink: #111111; /* Body copy */
+  --color-rule: #222222; /* Important input and container borders */
+  --color-muted: #6b6b6b; /* Supporting copy, metadata, inactive controls */
+  --color-stone: #a3a3a3; /* Placeholders, counters, tertiary information */
+  --color-hairline: #e5e5e5; /* Dividers, grid lines, quiet borders */
+  --color-canvas: #fafafa; /* Subtle surface differentiation */
+  --color-preview: #ececec; /* Workspace behind generated applications */
+
+  /* Type families
+     Cinzel      — brand names, major headings, certification scores
+     Montserrat  — navigation, buttons, labels, statuses, metadata
+     Inter       — paragraphs, descriptions, inputs, longer text
+     Nunito      — generated application previews only; never in main UI */
+  --font-*: initial;
+  --font-display: var(--font-cinzel, "Cinzel"), "Times New Roman", Georgia, serif;
+  --font-label: var(--font-montserrat, "Montserrat"), "Helvetica Neue", Arial, sans-serif;
+  --font-body: var(--font-inter, "Inter"), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-preview: var(--font-nunito, "Nunito"), system-ui, sans-serif;
+  --font-sans: var(--font-body);
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* Type sizes (with paired line heights) */
+  --text-label-xs: 8px;
+  --text-label-xs--line-height: 1.2;
+  --text-label-sm: 9px;
+  --text-label-sm--line-height: 1.2;
+  --text-label: 10px;
+  --text-label--line-height: 1.2;
+  --text-label-lg: 11px;
+  --text-label-lg--line-height: 1.2;
+
+  --text-body-sm: 13px;
+  --text-body-sm--line-height: 1.6;
+  --text-body: 15px;
+  --text-body--line-height: 1.6;
+  --text-body-lg: 17px;
+  --text-body-lg--line-height: 1.6;
+
+  --text-display-sm: 14px;
+  --text-display-sm--line-height: 1.2;
+  --text-display: 20px;
+  --text-display--line-height: 1.15;
+  --text-display-lg: 28px;
+  --text-display-lg--line-height: 1.15;
+  --text-display-xl: 40px;
+  --text-display-xl--line-height: 1.1;
+  --text-display-2xl: 56px;
+  --text-display-2xl--line-height: 1.05;
+
+  /* Tracking */
+  --tracking-display: 0.15em;
+  --tracking-label: 0.18em;
+  --tracking-label-wide: 0.24em;
+  --tracking-label-widest: 0.3em;
+  --tracking-body: 0.01em;
+
+  /* Leading */
+  --leading-display: 1.15;
+  --leading-label: 1.2;
+  --leading-body: 1.6;
+
+  /* Radius — square by default; pill reserved for "Start the Build" */
+  --radius-*: initial;
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-pill: 9999px;
+
+  /* Shadows — the brand uses hairlines, not shadows */
+  --shadow-*: initial;
+  --shadow-none: 0 0 #0000;
+
+  /* Content widths */
+  --container-prose: 640px;
+  --container-content: 880px;
+  --container-wide: 1200px;
+  --container-frame: 1440px;
+
+  /* Easing */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Live execution pulse */
+  --animate-pulse-soft: pulse-soft 1800ms var(--ease-standard) infinite;
+
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
 }
+
+/* 2. Semantic aliases ---------------------------------------------------- */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-preview: var(--surface-preview);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border-hairline);
+  --color-border-strong: var(--border-strong);
+  --color-border-active: var(--border-active);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 3. Non-Tailwind tokens ------------------------------------------------- */
+
+:root {
+  /* Semantic colors */
+  --background: var(--color-white);
+  --foreground: var(--color-ink);
+  --foreground-strong: var(--color-black);
+  --foreground-muted: var(--color-muted);
+  --foreground-subtle: var(--color-stone);
+  --foreground-inverse: var(--color-white);
+  --placeholder: var(--color-stone);
+
+  --surface: var(--color-canvas);
+  --surface-preview: var(--color-preview);
+
+  --border-hairline: var(--color-hairline);
+  --border-strong: var(--color-rule);
+  --border-active: var(--color-black);
+
+  --accent: var(--color-black);
+  --accent-foreground: var(--color-white);
+
+  /* Type weights */
+  --weight-display-regular: 400;
+  --weight-display: 600;
+  --weight-display-bold: 700;
+
+  --weight-label-medium: 500;
+  --weight-label: 600;
+  --weight-label-bold: 700;
+
+  --weight-body: 400;
+  --weight-body-medium: 500;
+  --weight-body-semibold: 600;
+
+  /* Spacing (8px system) */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 40px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 80px;
+  --space-10: 96px;
+  --space-11: 128px;
+  --space-12: 160px;
+
+  /* Layout */
+  --size-logo: 36px;
+  --height-nav: 64px;
+  --height-control: 44px;
+  --height-control-sm: 36px;
+
+  /* Borders */
+  --border-width: 1px;
+
+  /* Component values */
+  --button-hover-opacity: 0.88;
+  --disabled-opacity: 0.4;
+  --input-padding-y: 14px;
+  --input-padding-x: 16px;
+
+  /* Motion */
+  --duration-state: 160ms;
+  --duration-fade: 240ms;
+  --duration-fade-slow: 300ms;
+  --duration-progress: 400ms;
+  --duration-pulse: 1800ms;
+
+  /* Z-index */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-nav: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+}
+
+/* 4. Base styles --------------------------------------------------------- */
+
+html {
+  background: var(--background);
+  color: var(--foreground);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: var(--weight-body);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::placeholder {
+  color: var(--placeholder);
+  opacity: 1;
+}
+
+::selection {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+:focus-visible {
+  outline: var(--border-width) solid var(--color-black);
+  outline-offset: 2px;
+}
+
+hr {
+  border: 0;
+  border-top: var(--border-width) solid var(--border-hairline);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
