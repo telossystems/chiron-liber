@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import { SiteNav } from "@/components/site-nav";
+
 interface Chapter {
   num: string;
   tag: string;
@@ -15,7 +17,7 @@ const chapters: Chapter[] = [
   {
     num: "II",
     tag: "The Liberator’s Covenant",
-    text: "We chose the name “Chiron Liber”—Chiron the Liberator—because his story reflects our purpose as software developers. Our technical knowledge is not something to guard as a moat. It is something to share so that others can create.",
+    text: "We chose the name “Chiron Liber”—Chiron the Liberator—because his story reflects our purpose. Technical knowledge is not something to guard as a moat. It is something to share so that others can create.",
   },
   {
     num: "III",
@@ -25,7 +27,7 @@ const chapters: Chapter[] = [
   {
     num: "IV",
     tag: "The Utilitarian Commitment",
-    text: "This is our utilitarian commitment: to place the power of software creation into more capable hands, helping people solve meaningful problems and build things that benefit society.",
+    text: "This is our utilitarian commitment: to place the power of software creation into capable hands, helping people solve meaningful problems and build things that benefit society.",
   },
 ];
 
@@ -87,20 +89,7 @@ export default function Home() {
           </a>
 
           <div className="flex items-center gap-8">
-            <nav className="flex items-center gap-6">
-              <a
-                href="#mission"
-                className="font-label text-label-sm font-semibold uppercase tracking-label-wide text-white transition-colors hover:text-[#a3a3a3]"
-              >
-                Mission
-              </a>
-              <a
-                href="#tenets"
-                className="font-label text-label-sm font-semibold uppercase tracking-label-wide text-[#737373] transition-colors hover:text-white"
-              >
-                Tenets
-              </a>
-            </nav>
+            <SiteNav current="mission" />
           </div>
         </div>
       </header>
